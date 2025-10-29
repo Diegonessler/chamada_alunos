@@ -31,36 +31,11 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
     }
   }
 
-  Future<void> resetarHistorico() async {
-    final prefs = await SharedPreferences.getInstance();
-    final id = prefs.getString('matricula') ?? '000';
-    await prefs.remove('presenca_$id');
-
-    setState(() {
-      aluno = Aluno(
-        id: id,
-        nome: prefs.getString('nome') ?? 'Aluno',
-        presencasRegistradas: {},
-      );
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Histórico resetado com sucesso')),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(aluno != null ? 'Histórico de ${aluno!.nome}' : 'Histórico'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            tooltip: 'Resetar histórico',
-            onPressed: resetarHistorico,
-          ),
-        ],
       ),
       body: aluno == null
           ? const Center(child: CircularProgressIndicator())
@@ -84,7 +59,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
       }
     }
 
-        for (final data in agrupadoPorData.keys) {
+    for (final data in agrupadoPorData.keys) {
       for (int i = 1; i <= 4; i++) {
         agrupadoPorData[data]!.putIfAbsent(i, () => 'Ausente');
       }
